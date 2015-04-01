@@ -1,0 +1,30 @@
+package amber.pid_follow_trajectory;
+option java_package = "pl.edu.agh.amber.pidfollowtrajectory.proto";
+option java_outer_classname = "PidFollowTrajectoryProto";
+
+import "drivermsg.proto";
+
+extend amber.DriverMsg {
+    optional bool setTargets = 100;
+    optional bool getNextTargets = 101;
+    optional bool getVisitedTargets = 102;
+    optional Targets targets = 103;
+    optional Configuration configuration = 104;
+    optional bool stopExecution = 105;
+}
+
+message Targets {
+    repeated double longitudes = 1 [packed = true];
+    repeated double latitudes = 2 [packed = true];
+    repeated int64 times = 3 [packed = true];
+}
+
+message Configuration {
+    optional double maxLookahead = 1;
+    optional double weightAngular = 2;
+    optional double weighLinear = 3;
+    optional double maxCentricAcceleration = 4;
+    optional double maxLinearVelocity = 5;
+    optional double scale = 6;
+    optional int32 loopSleepTime = 7;
+}
