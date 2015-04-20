@@ -24,6 +24,14 @@ public class PidFollowTrajectory {
         return rocopieController;
     }
 
+    public void runStep(){
+        rocopieController.runStep();
+    }
+
+    public void stopExecution(){
+        rocopieController.stopExecution();
+    }
+
     public AlgorithmParams getAlgorithmParams() {
         return algorithmParams;
     }

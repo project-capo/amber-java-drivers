@@ -11,6 +11,8 @@ extend amber.DriverMsg {
     optional Targets targets = 103;
     optional Configuration configuration = 104;
     optional bool stopExecution = 105;
+    optional bool startExecution = 106;
+    optional bool stepExecution = 107;
 }
 
 message Targets {
