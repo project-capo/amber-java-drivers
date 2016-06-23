@@ -5,7 +5,7 @@ amber-java-drivers
 
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/4014/badge.svg?style=flat)](https://scan.coverity.com/projects/4014)
 
-Robot devices drivers for Amber platform in C/C++.
+Robot devices drivers for Amber platform in Java.
 
 Requirements
 ------------
@@ -44,15 +44,6 @@ Next, add following selected dependencies:
         <artifactId>amber-java-clients</artifactId>
         <version>0.7</version>
     </dependencies>
-
-
-How to use (Makefile)
----------------------
-
-Simply.
-
-    make
-    ./<name>-driver/bin/<name>_driver
 
 How to contribute
 -----------------
