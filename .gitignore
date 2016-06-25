@@ -1,4 +1,7 @@
 */*.iml
 */.idea/
 */target/
-*/generated-sources/
+generated-sources/
+.classpath
+.settings/
+.project

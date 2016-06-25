@@ -1,0 +1,19 @@
+package amber.location_proto;
+option java_package = "pl.edu.agh.amber.location.proto";
+option java_outer_classname = "LocationProto";
+
+import "drivermsg.proto";
+
+extend amber.DriverMsg {
+    optional bool get_location = 60;
+    optional Location currentLocation = 61;
+    optional string upload_map = 62;
+}
+
+message Location {
+    optional double x = 1;
+    optional double y = 2;
+    optional double p = 3;
+    optional double alfa = 4;
+    optional int64 timeStamp = 5;
+}
