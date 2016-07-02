@@ -41,7 +41,7 @@ Next, add following selected dependencies:
 
     <dependencies>
         <groupId>com.github.project-capo</groupId>
-        <artifactId>amber-java-clients</artifactId>
+        <artifactId>amber-java-drivers</artifactId>
         <version>0.7</version>
     </dependencies>
 
