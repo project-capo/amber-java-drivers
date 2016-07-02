@@ -12,7 +12,7 @@ pushd ${script_directory}
 	protoc drivermsg.proto --java_out=./../../../../../common/src/generated-sources/java
 	cd ./../../../../../
 	
-	for submodule in $(ls -d "dummy" "pid-follow-trajectory" "location-driver"); do
+	for submodule in $(ls -d "dummy" "pid-follow-trajectory" "location"); do
 		mkdir -p ${submodule}/src/generated-sources/java
 		for proto_file in $(find ${submodule}/src/main/resources/protobuf -name "*.proto"); do
 			protoc --proto_path=./common/src/main/resources/protobuf --proto_path=${submodule}/src/main/resources/protobuf/ ${proto_file} --java_out=${submodule}/src/generated-sources/java
