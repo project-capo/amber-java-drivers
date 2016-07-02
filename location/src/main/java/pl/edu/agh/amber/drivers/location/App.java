@@ -5,7 +5,7 @@ import java.io.Closeable;
 public class App implements Closeable {
 	LocationController locationController;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) {	
 		LocationController locationController = new LocationController(System.in, System.out);
 		locationController.run();
 	}

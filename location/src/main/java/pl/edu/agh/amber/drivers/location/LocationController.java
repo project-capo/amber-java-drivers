@@ -20,7 +20,8 @@ public class LocationController extends AbstractMessageHandler {
 	private final AtomicInteger atomicInteger;
 
 	public LocationController(InputStream in, OutputStream out) {
-		super(in, out, Executors.newFixedThreadPool(EXECUTOR_THREADS));
+		super(in, out, Executors.newFixedThreadPool(EXECUTOR_THREADS));				
+		logger.info("LocationController");		
 		this.atomicInteger = new AtomicInteger(0);
 		LocationProto.registerAllExtensions(getExtensionRegistry());
 		
