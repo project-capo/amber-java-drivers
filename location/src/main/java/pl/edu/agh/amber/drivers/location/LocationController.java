@@ -75,7 +75,10 @@ public class LocationController extends AbstractMessageHandler {
 		messageBuilder.setExtension(LocationProto.currentLocation, currentLocationBuilder.build());
 		messageBuilder.setAckNum(synNum);
 
-		getPipes().writeHeaderAndMessageToPipe(headerBuilder.build(), messageBuilder.build());
+		DriverHdr header = headerBuilder.build();
+		DriverMsg message =  messageBuilder.build();
+		
+		getPipes().writeHeaderAndMessageToPipe(header,message);
 	}
 
 	@Override
