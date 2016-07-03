@@ -65,9 +65,6 @@ public class LocationController extends AbstractMessageHandler {
 		LocationProto.Location.Builder currentLocationBuilder = LocationProto.Location.newBuilder();
 
 		if (location != null) {
-
-			logger.info("location != null");
-
 			currentLocationBuilder.setX(location.getX());
 			currentLocationBuilder.setY(location.getY());
 			currentLocationBuilder.setAlfa(location.getAlfa());
