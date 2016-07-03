@@ -5,27 +5,25 @@ import org.slf4j.LoggerFactory;
 import pl.edu.agh.amber.common.proto.CommonProto;
 import pl.edu.agh.amber.common.proto.CommonProto.DriverHdr;
 import pl.edu.agh.amber.common.proto.CommonProto.DriverMsg;
+import pl.edu.agh.amber.common.proto.CommonProto.DriverMsg.MsgType;
 import pl.edu.agh.amber.drivers.common.AbstractMessageHandler;
 import pl.edu.agh.amber.location.proto.LocationProto;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class LocationController extends AbstractMessageHandler {
 	private final static Logger logger = LoggerFactory.getLogger(LocationController.class);
-	private final static int EXECUTOR_THREADS = 10;
+	private final static int EXECUTOR_THREADS = 1;
 	private Location location;
-	private final AtomicInteger atomicInteger;
 
 	public LocationController(InputStream in, OutputStream out) {
-		super(in, out, Executors.newFixedThreadPool(EXECUTOR_THREADS));				
-		logger.info("LocationController");		
-		this.atomicInteger = new AtomicInteger(0);
+		super(in, out, Executors.newFixedThreadPool(EXECUTOR_THREADS));
+		logger.info("LocationController");
 		LocationProto.registerAllExtensions(getExtensionRegistry());
-		
-		this.location =  new Location();
+
+		this.location = new Location();
 		location.start();
 	}
 
@@ -43,7 +41,7 @@ public class LocationController extends AbstractMessageHandler {
 				}
 
 				if (message.getExtension(LocationProto.getLocation)) {
-					handleCurrentLocationRequest(header, message);
+					handleCurrentLocationRequest(clientId, message.getSynNum());
 				}
 			}
 		} catch (Exception e) {
@@ -55,32 +53,42 @@ public class LocationController extends AbstractMessageHandler {
 		logger.info("Client {} died", clientID);
 	}
 
-	private void handleCurrentLocationRequest(CommonProto.DriverHdr header, CommonProto.DriverMsg message) {
+	private void handleCurrentLocationRequest(int clientId, int synNum) {
 		logger.info("build current location msg");
 
-		CommonProto.DriverHdr responseHeader = CommonProto.DriverHdr.newBuilder()
-				.addAllClientIDs(header.getClientIDsList()).build();
+		DriverHdr.Builder headerBuilder = DriverHdr.newBuilder();
+		headerBuilder.addClientIDs(clientId);
 
-		CommonProto.DriverMsg.Builder responseMessageBuilder = CommonProto.DriverMsg.newBuilder();
-		responseMessageBuilder.setType(CommonProto.DriverMsg.MsgType.DATA);
-		responseMessageBuilder.setSynNum(message.getSynNum());
-		responseMessageBuilder.setAckNum(message.getAckNum());
+		DriverMsg.Builder messageBuilder = DriverMsg.newBuilder();
+		messageBuilder.setType(MsgType.DATA);
 
 		LocationProto.Location.Builder currentLocationBuilder = LocationProto.Location.newBuilder();
 
-		// mutex ??
 		if (location != null) {
+
+			logger.info("location != null");
+
 			currentLocationBuilder.setX(location.getX());
 			currentLocationBuilder.setY(location.getY());
 			currentLocationBuilder.setAlfa(location.getAlfa());
 			currentLocationBuilder.setP(location.getProp());
 			currentLocationBuilder.setTimeStamp(location.getTimestamp());
 		}
-		// endmutex ??
 
-		responseMessageBuilder.setExtension(LocationProto.currentLocation, currentLocationBuilder.build());
+		messageBuilder.setExtension(LocationProto.currentLocation, currentLocationBuilder.build());
+		messageBuilder.setAckNum(synNum);
 
-		getPipes().writeHeaderAndMessageToPipe(responseHeader, responseMessageBuilder.build());
+		getPipes().writeHeaderAndMessageToPipe(headerBuilder.build(), messageBuilder.build());
+	}
+
+	@Override
+	public void run() {
+		super.run();
+
+		if (!isAlive()) {
+			stop();
+			System.exit(1);
+		}
 	}
 
 	@Override
@@ -90,6 +98,6 @@ public class LocationController extends AbstractMessageHandler {
 	}
 
 	public void stop() {
-		location.Stop();		
+		location.Stop();
 	}
 }
