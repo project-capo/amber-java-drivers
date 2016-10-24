@@ -104,7 +104,8 @@ public class Location extends Thread {
 	public Location(String mapPath, String sIPAdress) {
 		logger.debug("Location constructor");
 
-		mapPath = "C:\\Users\\Szymon\\git\\szia_capo\\MazeRoboLabEmptyMap2.roson";
+		//mapPath = "C:\\Users\\Szymon\\git\\szia_capo\\MazeRoboLabEmptyMap2.roson";
+		mapPath = ".//MazeRoboLabEmptyMap2.roson";
 		sIPAdress = "192.168.2.201";
 
 		try {
