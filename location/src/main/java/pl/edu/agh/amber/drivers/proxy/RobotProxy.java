@@ -32,8 +32,11 @@ public class RobotProxy implements IMeasureReader {
 		logger.info("RobotProxy");
 
 		try {
+			logger.info("before AmberClient");
 			clientRoboClaw = new AmberClient(hostname, 26233);
 			clientHokuyo = new AmberClient(hostname, 26233);
+			
+			logger.info("after AmberClient");
 
 			roboclawProxy = new RoboclawProxy(clientRoboClaw, 0);
 			hokuyoProxy = new HokuyoProxy(clientHokuyo, 0);
