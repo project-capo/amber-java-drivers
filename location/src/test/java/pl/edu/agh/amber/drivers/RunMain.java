@@ -12,7 +12,7 @@ public class RunMain {
 			loc = new Location("","");
 			readThr = new Thread(RunMain::readLocation);
 			
-			readThr.start();
+			//readThr.start();
 			
 			loc.start();
 			loc.wait();
