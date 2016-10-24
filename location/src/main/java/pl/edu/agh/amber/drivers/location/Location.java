@@ -106,7 +106,7 @@ public class Location extends Thread {
 
 		//mapPath = "C:\\Users\\Szymon\\git\\szia_capo\\MazeRoboLabEmptyMap2.roson";
 		mapPath = ".//MazeRoboLabEmptyMap2.roson";
-		sIPAdress = "192.168.2.201";
+		sIPAdress = "127.0.0.1";
 
 		try {
 			measureReader = new RobotProxy(sIPAdress);
