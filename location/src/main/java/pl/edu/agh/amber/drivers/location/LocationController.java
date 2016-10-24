@@ -7,6 +7,7 @@ import pl.edu.agh.amber.common.proto.CommonProto.DriverHdr;
 import pl.edu.agh.amber.common.proto.CommonProto.DriverMsg;
 import pl.edu.agh.amber.common.proto.CommonProto.DriverMsg.MsgType;
 import pl.edu.agh.amber.drivers.common.AbstractMessageHandler;
+
 import pl.edu.agh.amber.location.proto.LocationProto;
 
 import java.io.InputStream;
@@ -23,7 +24,7 @@ public class LocationController extends AbstractMessageHandler {
 		logger.info("LocationController");
 		LocationProto.registerAllExtensions(getExtensionRegistry());
 
-		this.location = new Location();
+		this.location = new Location("","");
 		location.start();
 	}
 
@@ -65,6 +66,7 @@ public class LocationController extends AbstractMessageHandler {
 		LocationProto.Location.Builder currentLocationBuilder = LocationProto.Location.newBuilder();
 
 		if (location != null) {
+			location.getCurrentLocation();
 			currentLocationBuilder.setX(location.getX());
 			currentLocationBuilder.setY(location.getY());
 			currentLocationBuilder.setAlfa(location.getAlfa());
