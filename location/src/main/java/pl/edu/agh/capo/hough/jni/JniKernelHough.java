@@ -6,9 +6,9 @@ public class JniKernelHough {
 
     static {
         try {
-           // System.loadLibrary("kht-jni");
-        	
-        	System.load("C:\\Users\\Szymon\\git\\szia_capo\\kht-jni.dll");
+        	//System.load("C:\\Users\\Szymon\\git\\szia_capo\\kht-jni.dll");
+        		
+        	System.load("..\\lib\\kht-jni");
             LoggerFactory.getLogger(JniKernelHough.class).debug("Loaded kth-jni library");
         } catch (UnsatisfiedLinkError error) {
             LoggerFactory.getLogger(JniKernelHough.class).error("Could not load kth-jni library, did you run make.exe --file=Makefile.win inside lib directory?", error);
