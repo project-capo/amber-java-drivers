@@ -1,11 +1,11 @@
 SOURCE   = kht_source
-CPP      = g++.exe
+CPP      = g++
 OBJ      = ${SOURCE}/buffer_2d.o ${SOURCE}/jni_kernel_hough.o ${SOURCE}/kht.o ${SOURCE}/linking.o ${SOURCE}/peak_detection.o ${SOURCE}/subdivision.o ${SOURCE}/voting.o ${SOURCE}/eigen.o
 
-INCLUDES  = -I"C:/Program Files/Java/jdk1.8.0_91/include" -I"C:/Program Files/Java/jdk1.8.0_91/include/win32"
-BIN      = ../../kht-jni.dll
-CXXFLAGS = ${INCLUDES} -DBUILDING_DLL=1
-RM       = rm.exe -f
+INCLUDES  = -I"${JAVA_HOME}/include" -I"${JAVA_HOME}/include/linux"
+BIN      = ./kht-jni
+CXXFLAGS = ${INCLUDES} -DBUILDING_DLL=1 -fPIC
+RM       = rm -f
 DEF      = libkht-jni.def
 STATIC   = libkht-jni.a
 
@@ -17,7 +17,7 @@ clean: clean-custom
 	${RM} ${OBJ} ${BIN} ${DEF} ${STATIC}
 
 ${BIN}: ${OBJ}
-	${CPP} -m64 -shared ${OBJ} -o ${BIN} -Wl,--output-def,${DEF},--out-implib,${STATIC},--add-stdcall-alias
+	${CPP} -m32 -shared ${OBJ} -o ${BIN} 
 
 ../kht_sandbox/kht_source/buffer_2d.o: ../kht_sandbox/kht_source/buffer_2d.cpp
 	${CPP} -c ../kht_sandbox/kht_source/buffer_2d.cpp -o ../kht_sandbox/kht_source/buffer_2d.o ${CXXFLAGS}
