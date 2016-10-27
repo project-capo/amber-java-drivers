@@ -9,12 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pl.edu.agh.amber.common.AmberClient;
-import pl.edu.agh.amber.drivers.location.LocationController;
+
 import pl.edu.agh.amber.hokuyo.HokuyoProxy;
 import pl.edu.agh.amber.hokuyo.MapPoint;
 import pl.edu.agh.amber.hokuyo.Scan;
 import pl.edu.agh.amber.roboclaw.MotorsCurrentSpeed;
 import pl.edu.agh.amber.roboclaw.RoboclawProxy;
+
 import pl.edu.agh.capo.common.Vision;
 import pl.edu.agh.capo.robot.IMeasureReader;
 import pl.edu.agh.capo.robot.Measure;

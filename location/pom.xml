@@ -11,6 +11,14 @@
     <groupId>pl.edu.agh.amber.location</groupId>
     <artifactId>location</artifactId>
     <packaging>jar</packaging>
+	
+	 <repositories>
+      <repository>
+         <id>RepositoryCAPO</id>
+         <url>file://${basedir}/repo</url>
+      </repository>
+  	 </repositories>	
+	
 	<dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -60,27 +68,23 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
         
+    <dependency>
+         <groupId>capo</groupId>
+         <artifactId>amber-java-common</artifactId>
+         <version>1.0</version>
+      </dependency>
+      
         <dependency>
-            <groupId>amber-java-common</groupId>
-            <artifactId>amber-java-common</artifactId>
-             <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/LibCAPO/amber-java-common.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>amber-java-hokuyo</groupId>
-            <artifactId>amber-java-hokuyo</artifactId>
-             <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/LibCAPO/amber-java-hokuyo.jar</systemPath>
-        </dependency>           
-         <dependency>  
-            <groupId>amber-java-roboclaw</groupId>
-            <artifactId>amber-java-roboclaw</artifactId>
-             <version>1.0</version>
-            <scope>system</scope>
-             <systemPath>${project.basedir}/src/main/resources/LibCAPO/amber-java-roboclaw.jar</systemPath>
-        </dependency>       
+         <groupId>capo</groupId>
+         <artifactId>amber-java-hokuyo</artifactId>
+         <version>1.0</version>
+      </dependency>
+    
+       <dependency>
+         <groupId>capo</groupId>
+         <artifactId>amber-java-roboclaw</artifactId>
+         <version>1.0</version>
+      </dependency>
           
     </dependencies>
 
