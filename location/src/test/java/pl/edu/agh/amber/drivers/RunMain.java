@@ -9,7 +9,7 @@ public class RunMain {
 
 	public static void main(String[] args) {
 		try {
-			loc = new Location("","");
+			loc = new Location("");
 			readThr = new Thread(RunMain::readLocation);
 			
 			//readThr.start();
