@@ -16,7 +16,7 @@ public class App implements Closeable {
 			logger.error("No configuration file: " + args.length);
 			
 		logger.debug(args[0]);
-		LocationController locationController = new LocationController(System.in, System.out,args[1]);
+		LocationController locationController = new LocationController(System.in, System.out,args[0]);
 		locationController.run();
 	}
 
