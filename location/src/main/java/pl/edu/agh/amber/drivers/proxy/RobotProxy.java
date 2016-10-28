@@ -50,7 +50,7 @@ public class RobotProxy implements IMeasureReader {
 
 	@Override
 	public Measure read() {
-		logger.debug("RobotProxy read()");
+		logger.debug("RobotProxy read() enter");
 		
 		MotorsCurrentSpeed mcs;
 		Scan singleScan;
