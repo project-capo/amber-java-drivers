@@ -10,8 +10,14 @@ import pl.edu.agh.amber.drivers.common.AbstractMessageHandler;
 
 import pl.edu.agh.amber.location.proto.LocationProto;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 
 public class LocationController extends AbstractMessageHandler {
@@ -19,13 +25,23 @@ public class LocationController extends AbstractMessageHandler {
 	private final static int EXECUTOR_THREADS = 1;
 	private Location location;
 
-	public LocationController(InputStream in, OutputStream out) {
+	public LocationController(InputStream in, OutputStream out, String confFilename) {
 		super(in, out, Executors.newFixedThreadPool(EXECUTOR_THREADS));
 		logger.info("LocationController");
 		LocationProto.registerAllExtensions(getExtensionRegistry());
 
-		this.location = new Location("","");
-		location.start();
+		List<String> lines = new ArrayList<String>();
+		
+		try {
+			lines = Files.readAllLines(Paths.get(confFilename));
+			String sMapPath = lines.get(0);
+			
+			this.location = new Location(sMapPath);
+			location.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			logger.error(e.getMessage());
+		}
 	}
 
 	@Override

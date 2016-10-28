@@ -101,12 +101,10 @@ public class Location extends Thread {
 		}
 	}
 
-	public Location(String mapPath, String sIPAdress) {
+	public Location(String mapPath) {
 		logger.debug("Location constructor");
 
-		//mapPath = "C:\\Users\\Szymon\\git\\szia_capo\\MazeRoboLabEmptyMap2.roson";
-		mapPath = ".//MazeRoboLabEmptyMap2.roson";
-		sIPAdress = "127.0.0.1";
+		String sIPAdress = "127.0.0.1";
 
 		try {
 			measureReader = new RobotProxy(sIPAdress);

@@ -1,0 +1,108 @@
+{
+  "walls": [
+    {
+      "type": "wall",
+      "id": "Wall1",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "to": {
+        "x": 0.0,
+        "y": 2.0
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall2",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "to": {
+        "x": 3.0,
+        "y": 0.0
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall3",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 0.0,
+        "y": 2.0
+      },
+      "to": {
+        "x": 3.0,
+        "y": 2.0
+      }
+    },
+    {
+      "type": "wall",
+      "id": "Wall4",
+      "width": 0.1,
+      "height": 0.3,
+      "color": "ff000000",
+      "from": {
+        "x": 3.0,
+        "y": 0.0
+      },
+      "to": {
+        "x": 3.0,
+        "y": 2.0
+      }
+    }
+  ],
+  "gates": [],
+  "spaces": [
+    {
+      "type": "space",
+      "id": "Space1",
+      "kind": "room",
+      "name": null,
+      "function": null,
+      "expectedPersonCount": 1,
+      "area": 1.5778,
+      "diameter": 1.8848076824970763
+    }
+  ],
+  "nodes": [],
+  "robots": [],
+  "victims": [],
+  "space-walls": [
+    {
+      "type": "space-wall",
+      "spaceId": "Space1",
+      "wallId": "Wall1"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space1",
+      "wallId": "Wall2"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space1",
+      "wallId": "Wall3"
+    },
+    {
+      "type": "space-wall",
+      "spaceId": "Space1",
+      "wallId": "Wall4"
+    }
+  ],
+  "space-gates": [],
+  "space-nodes": [],
+  "space-robots": [],
+  "space-victims": [],
+  "gate-nodes": [],
+  "node-nodes": []
+}
