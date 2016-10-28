@@ -12,10 +12,10 @@ public class App implements Closeable {
 	
 	public static void main(String[] args) {
 		
-		if(args.length != 2)
-			logger.error("No configuration file");
+		if(args.length != 1)
+			logger.error("No configuration file: " + args.length);
 			
-		logger.debug(args[1]);
+		logger.debug(args[0]);
 		LocationController locationController = new LocationController(System.in, System.out,args[1]);
 		locationController.run();
 	}
