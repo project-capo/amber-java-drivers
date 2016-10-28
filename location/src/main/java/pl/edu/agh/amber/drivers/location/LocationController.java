@@ -30,18 +30,20 @@ public class LocationController extends AbstractMessageHandler {
 		logger.info("LocationController");
 		LocationProto.registerAllExtensions(getExtensionRegistry());
 
-		List<String> lines = new ArrayList<String>();
+		//List<String> lines = new ArrayList<String>();
 		
-		try {
-			lines = Files.readAllLines(Paths.get(confFilename));
-			String sMapPath = lines.get(0);
+		//try {
+		//	lines = Files.readAllLines(Paths.get(confFilename));
+		//	String sMapPath = lines.get(0);
 			
-			this.location = new Location(sMapPath);
+			this.location = new Location(confFilename);
+			
 			location.start();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			logger.error(e.getMessage());
-		}
+			
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			logger.error(e.getMessage());
+//		}
 	}
 
 	@Override
