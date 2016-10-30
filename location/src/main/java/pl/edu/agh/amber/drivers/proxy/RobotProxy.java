@@ -120,6 +120,13 @@ public class RobotProxy implements IMeasureReader {
 		logger.debug("RobotProxy Stop()");
 		
 		isFinished = true;
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			logger.debug(e.getMessage());
+		}
+		
 		clientRoboClaw.terminate();
 		clientHokuyo.terminate();		
 	}
