@@ -93,7 +93,7 @@ public class Location extends Thread {
 			setX(bestAgent.getLocation().positionX);
 			setY(bestAgent.getLocation().positionY);
 			setAlfa(Math.toRadians(bestAgent.getLocation().alpha));
-			setProp(0.0);
+			setProp(bestAgent.getEnergy());
 			setTimestamp(ts1.getTime());
 		} catch (Exception e) {
 			logger.error("Location error method getCurrentLocation()");
@@ -133,8 +133,10 @@ public class Location extends Thread {
 			logger.error(e.getMessage());
 		}
 	}
-
+	
 	public void Stop() {
+		
+		measureReader.Stop();
 		thrLocation.destroy();
 		this.interrupt();
 	}

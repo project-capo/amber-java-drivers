@@ -6,8 +6,7 @@ public class JniKernelHough {
 
     static {
         try {
-        	//System.load("C:\\Users\\Szymon\\git\\szia_capo\\kht-jni.dll");
-        		
+        	
         	System.load("//home//panda//amber//amber-java-drivers//location//lib//kht-jni");
             LoggerFactory.getLogger(JniKernelHough.class).debug("Loaded kth-jni library");
         } catch (UnsatisfiedLinkError error) {

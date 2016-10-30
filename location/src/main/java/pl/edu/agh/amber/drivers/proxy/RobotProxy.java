@@ -28,6 +28,8 @@ public class RobotProxy implements IMeasureReader {
 
 	private RoboclawProxy roboclawProxy;
 	private HokuyoProxy hokuyoProxy;
+	
+	private Boolean isFinished;
 
 	public RobotProxy(String hostname) {
 		logger.info("RobotProxy");
@@ -42,6 +44,8 @@ public class RobotProxy implements IMeasureReader {
 			roboclawProxy = new RoboclawProxy(clientRoboClaw, 0);
 			hokuyoProxy = new HokuyoProxy(clientHokuyo, 0);
 
+			isFinished = false;
+			
 		} catch (IOException e) {
 			logger.error("RobotProxy");
 			logger.error("Unable to connect to robot: " + e);
@@ -102,11 +106,21 @@ public class RobotProxy implements IMeasureReader {
 
 	@Override
 	public boolean isFinished() {
-		return false;
+		return isFinished;
 	}
 
 	@Override
 	public boolean isIdle() {
 		return false;
+	}
+	
+	@Override
+	public void Stop()
+	{
+		logger.debug("RobotProxy Stop()");
+		
+		isFinished = true;
+		clientRoboClaw.terminate();
+		clientHokuyo.terminate();		
 	}
 }

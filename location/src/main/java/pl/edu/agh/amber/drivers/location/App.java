@@ -13,7 +13,7 @@ public class App implements Closeable {
 	public static void main(String[] args) {
 		
 		if(args.length != 1)
-			logger.error("No configuration file: " + args.length);
+			logger.error("No map file: " + args.length);
 			
 		logger.debug(args[0]);
 		LocationController locationController = new LocationController(System.in, System.out,args[0]);

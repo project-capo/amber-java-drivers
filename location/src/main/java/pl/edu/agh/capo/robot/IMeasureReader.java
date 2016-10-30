@@ -6,4 +6,6 @@ public interface IMeasureReader {
     boolean isFinished();
 
     boolean isIdle();
+    
+    void Stop();
 }

@@ -25,25 +25,13 @@ public class LocationController extends AbstractMessageHandler {
 	private final static int EXECUTOR_THREADS = 1;
 	private Location location;
 
-	public LocationController(InputStream in, OutputStream out, String confFilename) {
+	public LocationController(InputStream in, OutputStream out, String mapPath) {
 		super(in, out, Executors.newFixedThreadPool(EXECUTOR_THREADS));
 		logger.info("LocationController");
 		LocationProto.registerAllExtensions(getExtensionRegistry());
 
-		//List<String> lines = new ArrayList<String>();
-		
-		//try {
-		//	lines = Files.readAllLines(Paths.get(confFilename));
-		//	String sMapPath = lines.get(0);
-			
-			this.location = new Location(confFilename);
-			
-			location.start();
-			
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			logger.error(e.getMessage());
-//		}
+		this.location = new Location(mapPath);
+		location.start();
 	}
 
 	@Override
@@ -96,9 +84,9 @@ public class LocationController extends AbstractMessageHandler {
 		messageBuilder.setAckNum(synNum);
 
 		DriverHdr header = headerBuilder.build();
-		DriverMsg message =  messageBuilder.build();
-		
-		getPipes().writeHeaderAndMessageToPipe(header,message);
+		DriverMsg message = messageBuilder.build();
+
+		getPipes().writeHeaderAndMessageToPipe(header, message);
 	}
 
 	@Override
@@ -106,6 +94,7 @@ public class LocationController extends AbstractMessageHandler {
 		super.run();
 
 		if (!isAlive()) {
+			logger.info("Stop method");
 			stop();
 			System.exit(1);
 		}
