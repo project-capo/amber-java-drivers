@@ -66,7 +66,7 @@ public class RobotProxy implements IMeasureReader {
 		
 		logger.debug("RobotProxy read() -> Before read speed and scan");
 		
-		while (isError) {
+		while (isError && !isFinished) {
 			try {
 				points = new ArrayList<MapPoint>();
 				visions = new ArrayList<Vision>();
