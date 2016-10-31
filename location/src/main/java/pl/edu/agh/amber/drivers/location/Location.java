@@ -17,6 +17,7 @@ import com.google.gson.JsonSyntaxException;
 import pl.edu.agh.amber.drivers.proxy.RobotProxy;
 import pl.edu.agh.capo.logic.Agent;
 import pl.edu.agh.capo.logic.Room;
+import pl.edu.agh.capo.logic.fitness.ClusterFitnessEstimator;
 import pl.edu.agh.capo.logic.scheduler.Scheduler;
 import pl.edu.agh.capo.logic.scheduler.divider.AbstractTimeDivider;
 import pl.edu.agh.capo.logic.scheduler.divider.EnergyTimeDivider;
@@ -40,6 +41,8 @@ public class Location extends Thread {
 	private double prop = 0;
 	private double alfa = 0;
 	private long timestamp = 0;
+
+	private Boolean semaphoreEnd;
 
 	public synchronized double getX() {
 		return x;
@@ -83,9 +86,8 @@ public class Location extends Thread {
 
 	public synchronized void getCurrentLocation() {
 		logger.debug("getCurrentLocation");
-		
-		try {
 
+		try {
 			Date today = new Date();
 			Timestamp ts1 = new Timestamp(today.getTime());
 			Agent bestAgent = timeDivider.getBest().getAgent();
@@ -93,7 +95,12 @@ public class Location extends Thread {
 			setX(bestAgent.getLocation().positionX);
 			setY(bestAgent.getLocation().positionY);
 			setAlfa(Math.toRadians(bestAgent.getLocation().alpha));
-			setProp(bestAgent.getEnergy());
+
+			if (CapoRobotConstants.FITNESS_ESTIMATOR_CLASS == ClusterFitnessEstimator.class)
+				setProp(normalizeClusterFitnessEstimator(bestAgent.getEnergy()));
+			else
+				setProp(bestAgent.getEnergy());
+
 			setTimestamp(ts1.getTime());
 		} catch (Exception e) {
 			logger.error("Location error method getCurrentLocation()");
@@ -105,8 +112,11 @@ public class Location extends Thread {
 		logger.debug("Location constructor");
 
 		String sIPAdress = "127.0.0.1";
+		// String sIPAdress = "192.168.2.101";
 
 		try {
+			semaphoreEnd = new Boolean(true);
+
 			measureReader = new RobotProxy(sIPAdress);
 			gson = new Gson();
 			MazeMap map;
@@ -125,19 +135,45 @@ public class Location extends Thread {
 	@Override
 	public void run() {
 		try {
-			thrLocation = new Thread(scheduler::start);
-			thrLocation.start();
-			thrLocation.wait();
+			synchronized (semaphoreEnd) {
+				thrLocation = new Thread(scheduler::start);
+				thrLocation.start();
+				semaphoreEnd.wait();
+			}
 		} catch (InterruptedException e) {
 			logger.error("Location error method run()");
 			logger.error(e.getMessage());
+		} catch (java.lang.IllegalMonitorStateException e) {
+			logger.error("Location error method run()");
+			logger.error(e.getMessage());
+		}
+
+		logger.debug("thrLocation exit run()");
+	}
+
+	public void Stop() {
+
+		try {
+			measureReader.Stop();
+		} catch (Exception ex) {
+			logger.error("measureReader.Stop()" + ex.getMessage());
+		}
+
+		synchronized (semaphoreEnd) {
+
+			semaphoreEnd.notifyAll();
+		}
+
+		try {
+			this.interrupt();
+		} catch (Exception ex) {
+			logger.error("this.interrupt()" + ex.getMessage());
 		}
 	}
-	
-	public void Stop() {
-		
-		measureReader.Stop();
-		thrLocation.destroy();
-		this.interrupt();
+
+	private double normalizeClusterFitnessEstimator(double value) {
+		return (value + 1) / 2; // normalize min (-1) max (1): $normalized =
+								// ($value -
+								// $min) / ($max - $min);
 	}
 }

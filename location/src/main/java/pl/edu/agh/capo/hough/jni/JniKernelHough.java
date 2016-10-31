@@ -7,6 +7,10 @@ public class JniKernelHough {
     static {
         try {
         	
+        	//Win32
+        	//System.load("C://Users//Szymon//git//amber-java-drivers//location//lib//win32_dll//kht-jni.dll");
+        	
+        	//Linux
         	System.load("//home//panda//amber//amber-java-drivers//location//lib//kht-jni");
         	
             LoggerFactory.getLogger(JniKernelHough.class).debug("Loaded kth-jni library");

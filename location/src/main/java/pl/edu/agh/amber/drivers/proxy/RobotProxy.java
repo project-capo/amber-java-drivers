@@ -28,7 +28,7 @@ public class RobotProxy implements IMeasureReader {
 
 	private RoboclawProxy roboclawProxy;
 	private HokuyoProxy hokuyoProxy;
-	
+
 	private Boolean isFinished;
 
 	public RobotProxy(String hostname) {
@@ -38,14 +38,14 @@ public class RobotProxy implements IMeasureReader {
 			logger.info("before AmberClient");
 			clientRoboClaw = new AmberClient(hostname, 26233);
 			clientHokuyo = new AmberClient(hostname, 26233);
-			
+
 			logger.info("after AmberClient");
 
 			roboclawProxy = new RoboclawProxy(clientRoboClaw, 0);
 			hokuyoProxy = new HokuyoProxy(clientHokuyo, 0);
 
 			isFinished = false;
-			
+
 		} catch (IOException e) {
 			logger.error("RobotProxy");
 			logger.error("Unable to connect to robot: " + e);
@@ -55,7 +55,7 @@ public class RobotProxy implements IMeasureReader {
 	@Override
 	public Measure read() {
 		logger.debug("RobotProxy read() enter");
-		
+
 		MotorsCurrentSpeed mcs;
 		Scan singleScan;
 		List<MapPoint> points = null;
@@ -63,38 +63,42 @@ public class RobotProxy implements IMeasureReader {
 		double rightVelocity = 0.0;
 		double leftVelocity = 0.0;
 		Boolean isError = true;
-		
+
 		logger.debug("RobotProxy read() -> Before read speed and scan");
-		
-		while (isError && !isFinished) {
-			try {
-				points = new ArrayList<MapPoint>();
-				visions = new ArrayList<Vision>();
 
-				mcs = roboclawProxy.getCurrentMotorsSpeed();
-				mcs.waitAvailable(200);
+		synchronized (isFinished) {
 
-				rightVelocity = (mcs.getFrontLeftSpeed() + mcs.getRearLeftSpeed()) / 2;
-				leftVelocity = (mcs.getFrontRightSpeed() + mcs.getRearRightSpeed()) / 2;
+			while (isError && !isFinished) {
+				try {
+					points = new ArrayList<MapPoint>();
+					visions = new ArrayList<Vision>();
 
-				singleScan = hokuyoProxy.getSingleScan();
+					mcs = roboclawProxy.getCurrentMotorsSpeed();
+					mcs.waitAvailable(200);
 
-				if (singleScan != null) {
-					points = singleScan.getPoints(200);
+					rightVelocity = (mcs.getFrontLeftSpeed() + mcs.getRearLeftSpeed()) / 2;
+					leftVelocity = (mcs.getFrontRightSpeed() + mcs.getRearRightSpeed()) / 2;
 
-					if (points != null) {
-						for (int i = 0; i < points.size(); i++)
-							visions.add(new Vision(points.get(i).getAngle(), points.get(i).getDistance() / 1000));
+					singleScan = hokuyoProxy.getSingleScan();
 
-						if (visions.size() != 0)
-							isError = false;
+					if (singleScan != null) {
+						points = singleScan.getPoints(200);
+
+						if (points != null) {
+							for (int i = 0; i < points.size(); i++)
+								visions.add(new Vision(points.get(i).getAngle(), points.get(i).getDistance() / 1000));
+
+							if (visions.size() != 0)
+								isError = false;
+						}
 					}
+				} catch (IOException e) {
+					logger.error("RobotProxy " + "Error in sending a command: " + e);
+				} catch (Exception e) {
+					logger.error("RobotProxy " + e.getMessage());
 				}
-			} catch (IOException e) {
-				logger.error("RobotProxy " + "Error in sending a command: " + e);
-			} catch (Exception e) {
-				logger.error("RobotProxy " + e.getMessage());
 			}
+
 		}
 
 		logger.debug("RobotProxy read() -> After read speed and scan");
@@ -111,23 +115,18 @@ public class RobotProxy implements IMeasureReader {
 
 	@Override
 	public boolean isIdle() {
-		return false;
+		return isFinished;
 	}
-	
+
 	@Override
-	public void Stop()
-	{
+	public void Stop() {
 		logger.debug("RobotProxy Stop()");
-		
-		isFinished = true;
-		
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			logger.debug(e.getMessage());
+
+		synchronized (isFinished) {
+			
+			isFinished = true;
+			clientRoboClaw.terminate();
+			clientHokuyo.terminate();
 		}
-		
-		clientRoboClaw.terminate();
-		clientHokuyo.terminate();		
 	}
 }
