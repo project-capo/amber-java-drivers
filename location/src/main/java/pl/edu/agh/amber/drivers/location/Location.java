@@ -94,7 +94,7 @@ public class Location extends Thread {
 
 			setX(bestAgent.getLocation().positionX);
 			setY(bestAgent.getLocation().positionY);
-			setAlfa(Math.toRadians(bestAgent.getLocation().alpha));
+			setAlfa(Math.toRadians(bestAgent.getLocation().alpha) - (Math.PI/2));
 
 			if (CapoRobotConstants.FITNESS_ESTIMATOR_CLASS == ClusterFitnessEstimator.class)
 				setProp(normalizeClusterFitnessEstimator(bestAgent.getEnergy()));
